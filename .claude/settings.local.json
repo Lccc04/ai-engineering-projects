@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -m pip install langchain langchain-text-splitters rank_bm25 jieba sentence-transformers faiss-cpu)",
+      "Bash(python tests/test_retrieval.py)",
+      "Bash(pip install *)",
+      "Bash(python tests/test_api.py)",
+      "Bash(pip list *)"
+    ]
+  }
+}

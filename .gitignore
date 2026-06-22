@@ -1,0 +1,54 @@
+# --- 敏感文件 ---
+.env
+*.key
+*.pem
+secrets.json
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# --- 虚拟环境 ---
+venv/
+.venv/
+env/
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# --- 项目数据（运行时生成） ---
+data/indexes/
+data/processed/
+data/*.json
+!data/*_cases.json
+workspace/
+*.db
+*.db-wal
+*.db-shm
+
+# --- 模型文件 ---
+models/
+*.pth
+*.bin
+*.safetensors
+
+# --- Docker ---
+docker/.env
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- 临时文件 ---
+*.log
+*.tmp
+*.temp

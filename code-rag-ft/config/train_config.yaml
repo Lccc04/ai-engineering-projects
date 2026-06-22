@@ -1,0 +1,40 @@
+model:
+  base: deepseek-coder-base
+  revision: main
+finetuning:
+  method: lora
+  type: qlora
+quantization:
+  bits: 4
+  double_quant: true
+  quant_type: nf4
+lora:
+  r: 8
+  alpha: 16
+  dropout: 0.05
+  target_modules:
+  - q_proj
+  - v_proj
+  - k_proj
+  - o_proj
+  - gate_proj
+  - up_proj
+  - down_proj
+training:
+  learning_rate: 0.0002
+  num_epochs: 3
+  batch_size: 8
+  gradient_accumulation_steps: 4
+  warmup_ratio: 0.03
+  max_seq_length: 2048
+  optimizer: paged_adamw_8bit
+  lr_scheduler: cosine
+dataset:
+  train_file: data/processed/deepseek_sft.jsonl
+  eval_split: 0.1
+  format: chat_completion
+  system_prompt: 你是一个资深 Python 工程师，请根据用户指令生成高质量代码或分析。请严格遵守指令要求，输出完整可运行的代码。
+output:
+  dir: ft-output
+  save_strategy: epoch
+  save_total_limit: 3
