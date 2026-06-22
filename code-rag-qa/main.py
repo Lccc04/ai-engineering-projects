@@ -108,8 +108,9 @@ async def health_check():
 def _mount_gradio():
     """延迟导入 Gradio 界面，挂载到 FastAPI"""
     from frontend.gradio_app import create_rag_ui
+    from frontend.theme import create_theme
     ui = create_rag_ui()
-    gr.mount_gradio_app(app, ui, path="/ui")
+    gr.mount_gradio_app(app, ui, path="/ui", theme=create_theme())
 
 
 _mount_gradio()

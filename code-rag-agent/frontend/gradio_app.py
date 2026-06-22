@@ -238,9 +238,7 @@ def create_agent_ui() -> gr.Blocks:
     """
 
     with gr.Blocks(
-        theme=theme,
         title="ReAct 智能研发 Agent",
-        css=custom_css,
         fill_height=True,
     ) as demo:
 
@@ -278,7 +276,7 @@ def create_agent_ui() -> gr.Blocks:
         # ── 主聊天区 ──
         chat = gr.ChatInterface(
             fn=run_agent_stream,
-            chatbot=gr.Chatbot(height=650, show_copy_button=True),
+            chatbot=gr.Chatbot(height=650),
             textbox=gr.Textbox(
                 placeholder="输入研发任务，例如：用 Python 读取 sales.csv 并生成月度销售趋势折线图",
                 container=True,
@@ -319,4 +317,5 @@ if __name__ == "__main__":
         server_name="0.0.0.0",
         server_port=8502,
         share=False,
+        theme=create_theme(),
     )

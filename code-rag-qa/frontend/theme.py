@@ -92,8 +92,6 @@ def create_theme() -> gr.Theme:
         input_border_color_dark=COLORS["border_strong"],
         input_border_color_focus=COLORS["border_focus"],
         input_border_color_focus_dark=COLORS["border_focus"],
-        input_text_color=COLORS["text_primary"],
-        input_text_color_dark=COLORS["text_primary"],
         input_placeholder_color=COLORS["text_tertiary"],
         input_placeholder_color_dark=COLORS["text_tertiary"],
 
@@ -104,8 +102,8 @@ def create_theme() -> gr.Theme:
         button_primary_background_fill_hover_dark=COLORS["primary_hover"],
         button_primary_text_color="#ffffff",
         button_primary_text_color_dark="#ffffff",
-        button_primary_border=COLORS["primary"],
-        button_primary_border_dark=COLORS["primary"],
+        button_primary_border_color=COLORS["primary"],
+        button_primary_border_color_dark=COLORS["primary"],
 
         # ── 次按钮 ──
         button_secondary_background_fill=COLORS["surface_2"],
@@ -127,14 +125,6 @@ def create_theme() -> gr.Theme:
         error_border_color=COLORS["error"],
         error_border_color_dark=COLORS["error"],
 
-        # ── Tab ──
-        tab_background_fill=COLORS["surface_1"],
-        tab_background_fill_dark=COLORS["surface_1"],
-        tab_text_color=COLORS["text_secondary"],
-        tab_text_color_dark=COLORS["text_secondary"],
-        tab_text_color_selected=COLORS["primary"],
-        tab_text_color_selected_dark=COLORS["primary_hover"],
-
         # ── 表格 ──
         table_border_color=COLORS["border_default"],
         table_border_color_dark=COLORS["border_default"],
@@ -145,23 +135,13 @@ def create_theme() -> gr.Theme:
 
         # ── 圆角 ──
         block_radius="8px",
-        block_radius_dark="8px",
         input_radius="8px",
-        input_radius_dark="8px",
-        button_primary_radius="8px",
-        button_primary_radius_dark="8px",
-        button_secondary_radius="8px",
-        button_secondary_radius_dark="8px",
         checkbox_border_radius="4px",
-        checkbox_border_radius_dark="4px",
         table_radius="8px",
-        table_radius_dark="8px",
-        panel_radius="8px",
-        panel_radius_dark="8px",
+        container_radius="8px",
 
         # ── 阴影 ──
         shadow_drop="0 1px 3px rgba(0,0,0,0.3)",
-        shadow_drop_dark="0 1px 3px rgba(0,0,0,0.3)",
         shadow_spread="6px",
         shadow_spread_dark="6px",
     )

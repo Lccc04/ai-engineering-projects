@@ -54,7 +54,7 @@ def get_dataset_stats(df: pd.DataFrame) -> dict:
 # Tab 1: 数据集预览
 # ═══════════════════════════════════════════════
 
-def build_data_tab():
+def build_data_tab(demo: gr.Blocks):
     """构建数据集预览 Tab"""
     with gr.Column():
         gr.HTML(f"""
@@ -256,7 +256,6 @@ dataset:
                 lines=22,
                 label="YAML 配置预览",
                 max_lines=30,
-                show_copy_button=True,
                 elem_classes=["yaml-preview"],
             )
 
@@ -284,7 +283,7 @@ dataset:
 # Tab 3: 评测中心
 # ═══════════════════════════════════════════════
 
-def build_eval_tab():
+def build_eval_tab(demo: gr.Blocks):
 
     def load_eval_report() -> dict:
         """加载评测报告"""
@@ -457,9 +456,7 @@ def create_ft_ui() -> gr.Blocks:
     """
 
     with gr.Blocks(
-        theme=theme,
         title="QLoRA 微调数据工坊",
-        css=custom_css,
     ) as demo:
 
         gr.HTML(f"""
@@ -479,11 +476,11 @@ def create_ft_ui() -> gr.Blocks:
 
         with gr.Tabs():
             with gr.Tab("📊 数据集预览"):
-                build_data_tab()
+                build_data_tab(demo)
             with gr.Tab("⚙️ 训练配置"):
                 build_config_tab()
             with gr.Tab("📈 评测中心"):
-                build_eval_tab()
+                build_eval_tab(demo)
 
     return demo
 
@@ -498,4 +495,5 @@ if __name__ == "__main__":
         server_name="0.0.0.0",
         server_port=8503,
         share=False,
+        theme=create_theme(),
     )

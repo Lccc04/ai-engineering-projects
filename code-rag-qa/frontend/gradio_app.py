@@ -9,6 +9,11 @@ from pathlib import Path
 _PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.insert(0, str(_PROJECT_ROOT))
 
+# 确保本目录也在 path 中（被 main.py 导入时需要）
+_FRONTEND_ROOT = Path(__file__).parent
+if str(_FRONTEND_ROOT) not in sys.path:
+    sys.path.insert(0, str(_FRONTEND_ROOT))
+
 import gradio as gr
 import requests
 import time
@@ -185,9 +190,7 @@ def create_rag_ui() -> gr.Blocks:
     """
 
     with gr.Blocks(
-        theme=theme,
         title="代码 RAG 知识库问答",
-        css=custom_css,
         fill_height=True,
     ) as demo:
 
@@ -331,7 +334,7 @@ def create_rag_ui() -> gr.Blocks:
                 chat = gr.ChatInterface(
                     fn=stream_qa,
                     additional_inputs=[mode_select, topk_slider, cache_toggle],
-                    chatbot=gr.Chatbot(height=600, show_copy_button=True),
+                    chatbot=gr.Chatbot(height=600),
                     textbox=gr.Textbox(
                         placeholder="输入代码相关的问题，如：FastAPI 的路由注册是怎么实现的？",
                         container=True,
@@ -340,8 +343,8 @@ def create_rag_ui() -> gr.Blocks:
                     title="",
                     description="",
                     examples=[
-                        "FastAPI 中 APIRouter 的 add_api_route 是怎么实现的？",
-                        "Pandas DataFrame 的 groupby 底层 split-apply-combine 机制是什么？",
+                        ["FastAPI 中 APIRouter 的 add_api_route 是怎么实现的？"],
+                        ["Pandas DataFrame 的 groupby 底层 split-apply-combine 机制是什么？"],
                     ],
                     cache_examples=False,
                 )
@@ -379,4 +382,5 @@ if __name__ == "__main__":
         server_name="0.0.0.0",
         server_port=8501,
         share=False,
+        theme=create_theme(),
     )
