@@ -26,6 +26,7 @@
 ### 代码 RAG 知识库问答系统
 技术栈: Python · LangChain · FAISS · BM25 · Cross-BERT · FastAPI · Docker
 
+- **Prompt 工程**：为代码场景设计3套专用 System Prompt 模板（代码生成/解释/排错），6条幻觉约束规则（仅基于上下文/不知道就说不知道/禁止编造API），temperature=0.1 低温控制；关键词路由自动识别20+意图关键词；三层幻觉抑制方案（Prompt约束+上下文压缩+实体反向匹配），幻觉率下降65%
 - 独立设计 6 层 RAG 管线：**语法感知分块**(AST边界切分, chunk=600/overlap=80) → FAISS IndexFlatIP 向量检索 + **BM25**(jieba代码感知分词) → Min-Max 归一化融合(0.6:0.4) → **Cross-BERT 精排**(Top-20→Top-3) → 句子级上下文压缩(Token-35%) → **三层幻觉抑制**(Prompt约束+压缩+实体反向匹配)
 - 消融实验量化：**Top-3 召回率 纯向量0.67→混合0.79→混合+重排0.88**；语法感知分块+19%；幻觉率-65%
 - 工程化：FastAPI API(**令牌桶10QPS**+**TTL缓存<5ms**+Swagger中文文档) + loguru全链路 + 15并发100%成功率 + Docker Compose
@@ -40,7 +41,7 @@
 ### QLoRA 代码指令微调
 技术栈: Python · DeepSeek V4 Pro · QLoRA 4bit · Pydantic · YAML
 
-- 自制 ~3,300条代码指令数据集：CodeAlpaca-20k筛选3k + 手工标注200条FastAPI/Pandas + 100条负例(错误+修复) + LLM增强200条，覆盖4类任务
+- 自制 ~3,300条代码指令数据集：CodeAlpaca-20k筛选3k + 手工标注200条FastAPI/Pandas + 100条负例(错误+修复) + **元Prompt驱动LLM自动增强200条**(种子模板→批量扩增, 5条/批防崩塌, JSON格式强制输出)，覆盖4类任务
 - 数据质量Pipeline: **Pydantic格式校验→AST语法检查→MD5去重→长度过滤**，标注来源，输出Alpaca JSONL+DeepSeek SFT格式
 - **QLoRA 4bit NF4双重量化** + LoRA r=8 α=16(7个全投影层) + lr=2e-4 cosine + 3epoch batch=8，训练参数仅0.1%，**pass@1 43%→61%**
 - 20条黄金Case评测体系(含成功标准/失败红线) + 三级评分器(确定性检查/LLM裁判/人工复核) + 自动化回归(--n)
@@ -48,6 +49,7 @@
 ### ReAct 智能研发 Agent
 技术栈: Python · DeepSeek Function Calling · SQLite · multiprocessing沙箱
 
+- **Prompt 链编排**：设计三阶段 Prompt 链驱动 Agent 任务编排——SYSTEM_PROMPT 定义行为边界和工具规则，PLAN_PROMPT 强制输出结构化子步骤，VERIFY_PROMPT 驱动自检并标记 [PASS]/[RETRY]；temperature=0.2 保证执行稳定性
 - **Plan→Execute→Verify 三阶段 ReAct**：Plan拆解子步骤(t=0.1)→Execute Function Calling逐步调用→Verify反向校验(最多3次回溯)，单任务平均2.7轮调试
 - 三工具: python_runner(**multiprocessing.spawn子进程隔离,30s超时,10类危险模块黑名单**) + kb_search(对接RAG索引) + file_manager(路径穿越防护)
 - **SQLite 4表持久化**(WAL+外键+4索引): sessions/messages/agent_traces/tool_call_logs，支持断点续接+全链路审计
